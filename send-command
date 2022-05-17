@@ -1,0 +1,4 @@
+#!/bin/sh
+commandlist=$(ls /home/mehdi/coding/c/ctty/ | grep .dat)
+chosen="$( echo "$commandlist" | dmenu -i -p "choose the file to send...")" || exit 1
+echo 'mehdi' | sudo -S /home/mehdi/coding/c/ttyUSB-send/csend /home/mehdi/coding/c/ttyUSB-send/$chosen
