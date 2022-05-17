@@ -1,0 +1,12 @@
+#!/bin/sh
+i=0
+devicelist=$(sed "s/.*=//" /sys/class/tty/ttyUSB*/device/uevent)
+for device in $devicelist
+do
+	configfile=/etc/minirc."$device"
+	[ -f $configfile ] && sudo chown mehdi $configfile && sed -n "s/USB*?/USB$i/" $configfile || sudo touch $configfile && sudo chown mehdi $configfile && echo "pu port             /dev/ttyUSB$i" > $configfile || echo "file not created"
+	((i=i+1))
+done
+
+chosen="$(echo "$devicelist" | dmenu -i -p "Connect to:")" || exit 1
+sudo minicom -s $chosen
